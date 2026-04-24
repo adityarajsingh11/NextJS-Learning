@@ -1,0 +1,26 @@
+'use client'
+
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import React from 'react'
+
+function page() {
+  const router = useRouter()
+  return (
+    <div>
+      <ul>
+        <Link href={"/"}><li>Home</li></Link>
+        <Link href={"/about"}><li>About</li></Link>
+        <Link href={"/contact"}><li>Contact</li></Link>
+        
+        
+        
+      </ul>
+      <button onClick={()=> router.push("/about")} className='bg-blue-200'>
+        go to about page
+      </button>
+    </div>
+  )
+}
+
+export default page
