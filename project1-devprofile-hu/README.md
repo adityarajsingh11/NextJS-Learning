@@ -77,4 +77,5 @@ npm run dev
 
 ## Notes 
 
-For the working of tailwind css globalcss must inside layout.jsx
+For the working of tailwind css globals.css must import inside layout.jsx
+import "./globals.css"
