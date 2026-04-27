@@ -1,0 +1,114 @@
+import { NextAuthOptions } from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
+import connectDb from "./db"
+import User from "@/model/user.model"
+import bcrypt from "bcryptjs"
+import { signIn } from "next-auth/react"
+import Google from "next-auth/providers/google"
+
+const authOptions:NextAuthOptions ={
+    providers:[
+        // login kaise karoge 
+        CredentialsProvider({
+            name:"Credentials",
+            credentials:{
+                email:{label:"Email",type:"text"},
+                password:{label:"Password",type:"password"}
+            },
+
+            async authorize(credentials,req){
+                let email = credentials?.email
+                let password = credentials?.password
+                if(!email || !password){
+                    throw new Error("Invalid credentials")
+                }
+                await connectDb()
+                let user = await User.findOne({email})
+                if(!user){
+                    throw new Error("User not found")
+                }
+                let isMatch = await bcrypt.compare(password,user.password)
+                if(!isMatch){
+                    throw new Error("Incorrect Password")
+                }
+
+                return {
+                    id:user._id,
+                    email:user.email,
+                    name:user.name,
+                    image:user.image
+                }
+
+
+            }
+
+        }),
+
+        Google({
+            clientId:process.env.GOOGLE_CLIENT_ID!,
+            clientSecret:process.env.GOOGLE_CLIENT_SECRET!
+        })
+
+    ],
+    callbacks:{
+        // token m user details daal di
+        async signIn({account,user}){
+            if(account?.provider=="google"){
+                await connectDb()
+                let existUser = await User.findOne({email:user?.email})
+                if(!existUser){
+                       existUser=await User.create({
+                        name:user?.name,
+                        email:user?.email
+                    })
+                }
+
+                user.id=existUser._id as string
+            }
+
+            return true
+        },
+
+
+        async jwt({token,user}){
+            if(user){
+                token.id = user.id
+                token.email = user.email
+                token.name = user.name
+                token.image = user.image
+            }
+            return token
+        },
+        // session m user details daal di
+        session({session,token}){
+            if(session.user){
+                session.user.id = token.id as string
+                session.user.email = token.email
+                session.user.name = token.name
+                session.user.image = token.image as string
+            }
+            return session
+        }
+    },
+    session:{
+        strategy:"jwt",
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    },
+    pages:{
+        signIn:'/login',
+        error:'/login'
+
+    },
+    secret:process.env.NEXT_AUTH_SECRET
+
+}
+
+export default authOptions
+
+// signIn
+
+// token generate, token cookies m store h 
+
+// token ke andr user details daal di
+
+// session m user details daal di
