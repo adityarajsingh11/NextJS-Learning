@@ -8,3 +8,8 @@ UrOHgR0p0FLabF3i
 4.54 se start h 
 
 home page.jsx se kr rha h usko route kr denge kisi aur page pr 
+
+
+middleware m public rakhma h bola gya h 
+
+css chala gya tha usko fhir matcher se change kiya h 
