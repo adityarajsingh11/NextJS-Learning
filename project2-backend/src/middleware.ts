@@ -9,6 +9,7 @@ import type { NextRequest } from 'next/server'
 export async function middleware(req: NextRequest) {
     const {pathname}=req.nextUrl
     const publicRoutes = [
+      "/home",
       "/login",
       "/register",
       "/api/auth",
@@ -21,7 +22,7 @@ export async function middleware(req: NextRequest) {
     
       const  token = await getToken({req,secret:process.env.NEXT_AUTH_SECRET})
       if(!token){
-          const loginUrl = new URL("/login",req.url)
+          const loginUrl = new URL("/home",req.url)
           loginUrl.searchParams.set("callbackUrl",req.url)
           return NextResponse.redirect(loginUrl)
           

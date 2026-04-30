@@ -6,7 +6,7 @@ import UserContext from "@/context/UserContext";
 
 
 export const metadata: Metadata = {
-  title: "Backend Project",
+  title: "CreditInsight",
   description: "This is a backend project built with Next.js and TypeScript.",
 };
 
