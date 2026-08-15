@@ -5,6 +5,13 @@ A modern full-stack web application that helps users analyze their credit risk b
 Built using **Next.js**, **NextAuth**, and **Cloudinary**, this project focuses on clean UI, secure authentication, and real-time risk calculation.
 
 ---
+## 🚀 Live Demo
+
+**Live Website:** [https://next-js-learning-mu-seven.vercel.app/](https://next-js-learning-mu-seven.vercel.app/)
+
+**Deployed on:** Vercel
+
+---
 
 ## 🚀 Features
 
